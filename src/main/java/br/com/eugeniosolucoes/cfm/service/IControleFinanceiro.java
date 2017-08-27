@@ -19,4 +19,6 @@ public interface IControleFinanceiro {
     Balanco salvarLancamento( Lancamento lancamento );
 
     Balanco excluirLancamento( Lancamento lancamento );
+    
+    void sincronizar();
 }

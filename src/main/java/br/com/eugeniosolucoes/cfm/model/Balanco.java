@@ -5,6 +5,7 @@
  */
 package br.com.eugeniosolucoes.cfm.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +14,11 @@ import java.util.List;
  *
  * @author eugenio
  */
-public class Balanco {
+public class Balanco implements Serializable {
 
+
+    private static final long serialVersionUID = 1L;
+    
     private int mes;
 
     private int ano;
@@ -23,10 +27,8 @@ public class Balanco {
 
     private BigDecimal debitos;
 
-    private boolean online;
-
     private List<Lancamento> lancamentos;
-
+    
     public Balanco() {
         this.creditos = BigDecimal.ZERO;
         this.debitos = BigDecimal.ZERO;
@@ -72,14 +74,6 @@ public class Balanco {
 
     public BigDecimal getBalanco() {
         return this.creditos.subtract( this.debitos );
-    }
-
-    public boolean isOnline() {
-        return online;
-    }
-
-    public void setOnline( boolean online ) {
-        this.online = online;
     }
 
     public List<Lancamento> getLancamentos() {

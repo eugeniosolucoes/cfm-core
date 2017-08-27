@@ -6,15 +6,11 @@
 package br.com.eugeniosolucoes.cfm;
 
 import br.com.eugeniosolucoes.cfm.model.Balanco;
-import br.com.eugeniosolucoes.cfm.model.Lancamento;
-import br.com.eugeniosolucoes.cfm.model.Tipo;
-import br.com.eugeniosolucoes.cfm.service.IControleFinanceiro;
-import br.com.eugeniosolucoes.cfm.service.impl.ControleFinanceiroImpl;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.ZoneId;
-import java.util.Date;
+import br.com.eugeniosolucoes.cfm.model.Categoria;
+import br.com.eugeniosolucoes.cfm.model.Frequencia;
+import br.com.eugeniosolucoes.cfm.repository.IBalancoRepository;
+import br.com.eugeniosolucoes.cfm.repository.impl.BalancoRepositoryImpl;
+import java.util.List;
 
 /**
  *
@@ -24,20 +20,11 @@ public class Main {
 
     public static void main( String[] args ) {
 
-        IControleFinanceiro icf = new ControleFinanceiroImpl();
+        IBalancoRepository repository = new BalancoRepositoryImpl();
 
-        Balanco balanco = icf.getBalanco( 7, 2017, 1 );
-
-        Lancamento lancamento = new Lancamento();
-        lancamento.setInclusao( Date.from( LocalDate.of( 2017, Month.JULY, 10 )
-                .atStartOfDay( ZoneId.systemDefault() ).toInstant() ) );
-        lancamento.setUsuario( 1 );
-        lancamento.setValor( new BigDecimal( "10" ) );
-        lancamento.setTipo( Tipo.CREDITO );
+        Balanco periodo = repository.getPeriodo( 1, 2017, 8 );
         
-        icf.salvarLancamento( lancamento );
+        System.out.println( periodo );
 
-        //icf.excluirLancamento( lancamento );
-        System.out.printf( "%.2f%n", balanco.getBalanco() );
     }
 }

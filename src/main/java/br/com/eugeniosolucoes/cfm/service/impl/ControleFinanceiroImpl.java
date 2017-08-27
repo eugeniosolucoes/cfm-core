@@ -7,74 +7,37 @@ package br.com.eugeniosolucoes.cfm.service.impl;
 
 import br.com.eugeniosolucoes.cfm.model.Balanco;
 import br.com.eugeniosolucoes.cfm.model.Lancamento;
-import br.com.eugeniosolucoes.cfm.repository.BalancoRepository;
+import br.com.eugeniosolucoes.cfm.repository.IBalancoRepository;
+import br.com.eugeniosolucoes.cfm.repository.impl.BalancoRepositoryImpl;
 import br.com.eugeniosolucoes.cfm.service.IControleFinanceiro;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ControleFinanceiroImpl implements IControleFinanceiro {
 
-    private final BalancoRepository repository = new BalancoRepository();
+    private final IBalancoRepository repository = new BalancoRepositoryImpl();
 
-    private final List<Balanco> lista = new ArrayList<>();
-
+    private final List<Balanco> periodos = new ArrayList<>();
+    
     @Override
     public Balanco getBalanco( int mes, int ano, int usuario ) {
-        try {
-            Balanco balanco = repository.getFromJson( usuario, ano, mes );
-            if ( balanco != null ) {
-                adicionarBalanco( balanco );
-                return balanco;
-            }
-        } catch ( Exception e ) {
-            e.printStackTrace();
-        }
-        Balanco balanco = new Balanco( mes, ano );
-        adicionarBalanco( balanco );
-        return balanco;
+        throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
     }
 
-    private void adicionarBalanco( Balanco balanco ) {
-        int index = lista.indexOf( balanco );
-        if ( index == -1 ) {
-            lista.add( balanco );
-        } else {
-            lista.add( index, balanco );
-        }
-    }
 
     @Override
     public Balanco salvarLancamento( Lancamento lancamento ) {
-        Balanco balanco = new Balanco( lancamento.getMes(), lancamento.getAno() );
-        if ( lista.contains( balanco ) ) {
-            int index = lista.indexOf( balanco );
-            balanco = lista.get( index );
-            balanco.getLancamentos().add( lancamento );
-            switch ( lancamento.getTipo() ) {
-                case CREDITO:
-                    balanco.creditar( lancamento.getValorTotal() );
-                    break;
-                default:
-                    balanco.debitar( lancamento.getValorTotal() );
-            }
-
-        } else {
-            lista.add( new Balanco( lancamento.getMes(), lancamento.getAno() ) );
-            salvarLancamento( lancamento );
-        }
-        return lista.get( lista.indexOf( balanco ) );
+        throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public Balanco excluirLancamento( Lancamento lancamento ) {
-        Balanco balanco = new Balanco( lancamento.getMes(), lancamento.getAno() );
-        if ( lista.contains( balanco ) ) {
-            int index = lista.indexOf( balanco );
-            balanco = lista.get( index );
-            balanco.debitar( lancamento.getValorTotal().negate() );
-            balanco.getLancamentos().remove( lancamento );
-        }
-        return balanco;
+        throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void sincronizar() {
+        throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

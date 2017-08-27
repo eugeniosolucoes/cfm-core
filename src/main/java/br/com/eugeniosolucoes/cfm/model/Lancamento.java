@@ -5,6 +5,7 @@
  */
 package br.com.eugeniosolucoes.cfm.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -16,7 +17,9 @@ import java.util.Objects;
  *
  * @author eugenio
  */
-public class Lancamento {
+public class Lancamento implements Serializable {
+
+    private static final long serialVersionUID = 1L;
     
     private Integer id;
     
@@ -37,6 +40,8 @@ public class Lancamento {
     private String categorias;
     
     private int usuario;
+    
+    private boolean local;
     
     public Lancamento() {
         this.inclusao = Date.from( LocalDate.now().atStartOfDay( ZoneId.systemDefault() ).toInstant() );
@@ -60,6 +65,7 @@ public class Lancamento {
         this.quantidade = new BigDecimal( quantidade );
         this.valor = new BigDecimal( valor );
         this.usuario = usuario;
+        this.local = true;
     }
     
     public Integer getId() {
@@ -157,14 +163,23 @@ public class Lancamento {
     public int getDia() {
         return inclusao.toInstant().atZone( ZoneId.systemDefault() ).toLocalDate().getDayOfMonth();
     }
+
+    public boolean isLocal() {
+        return local;
+    }
     
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 29 * hash + Objects.hashCode( this.id );
+        hash = 97 * hash + Objects.hashCode( this.tipo );
+        hash = 97 * hash + Objects.hashCode( this.descricao );
+        hash = 97 * hash + Objects.hashCode( this.inclusao );
+        hash = 97 * hash + Objects.hashCode( this.quantidade );
+        hash = 97 * hash + Objects.hashCode( this.valor );
+        hash = 97 * hash + this.usuario;
         return hash;
     }
-    
+
     @Override
     public boolean equals( Object obj ) {
         if ( this == obj ) {
@@ -177,8 +192,25 @@ public class Lancamento {
             return false;
         }
         final Lancamento other = (Lancamento) obj;
-        return Objects.equals( this.id, other.id );
+        if ( this.usuario != other.usuario ) {
+            return false;
+        }
+        if ( !Objects.equals( this.descricao, other.descricao ) ) {
+            return false;
+        }
+        if ( this.tipo != other.tipo ) {
+            return false;
+        }
+        if ( !Objects.equals( this.inclusao, other.inclusao ) ) {
+            return false;
+        }
+        if ( !Objects.equals( this.quantidade, other.quantidade ) ) {
+            return false;
+        }
+        return Objects.equals( this.valor, other.valor );
     }
+
+    
     
     @Override
     public String toString() {
@@ -186,5 +218,6 @@ public class Lancamento {
                 this.descricao, String.format( "%d-%d-%d", getAno(), getMes(),
                         getDia() ), this.getValorTotal() );
     }
+    
     
 }
