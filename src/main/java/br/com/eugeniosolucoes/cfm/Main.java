@@ -5,11 +5,10 @@
  */
 package br.com.eugeniosolucoes.cfm;
 
-import br.com.eugeniosolucoes.cfm.model.Balanco;
-import br.com.eugeniosolucoes.cfm.model.Categoria;
-import br.com.eugeniosolucoes.cfm.model.Frequencia;
-import br.com.eugeniosolucoes.cfm.repository.IBalancoRepository;
-import br.com.eugeniosolucoes.cfm.repository.impl.BalancoRepositoryImpl;
+import br.com.eugeniosolucoes.cfm.model.Lancamento;
+import br.com.eugeniosolucoes.cfm.model.Tipo;
+import br.com.eugeniosolucoes.cfm.service.IControleFinanceiro;
+import br.com.eugeniosolucoes.cfm.service.impl.ControleFinanceiroImpl;
 import java.util.List;
 
 /**
@@ -20,11 +19,12 @@ public class Main {
 
     public static void main( String[] args ) {
 
-        IBalancoRepository repository = new BalancoRepositoryImpl();
+        IControleFinanceiro icf = new ControleFinanceiroImpl();
 
-        Balanco periodo = repository.getPeriodo( 1, 2017, 8 );
-        
-        System.out.println( periodo );
-
+        //Lancamento lancamento = new Lancamento( Tipo.DEBITO, "teste1", "2017-08-01", "1", "30", 1 );
+        //icf.salvarLancamento( lancamento );
+        List<Lancamento> lancamentos = icf.getLancamentos();
+        System.out.println( lancamentos );
     }
+
 }

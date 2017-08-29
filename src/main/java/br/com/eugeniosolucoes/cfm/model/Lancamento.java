@@ -10,7 +10,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -20,29 +22,31 @@ import java.util.Objects;
 public class Lancamento implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     private Integer id;
-    
+
     private Tipo tipo;
-    
+
     private String descricao;
-    
+
     private int frequencia;
-    
+
     private Date inclusao;
-    
+
     private BigDecimal quantidade;
-    
+
     private BigDecimal valor;
-    
+
     private String link;
-    
+
     private String categorias;
-    
+
     private int usuario;
-    
+
     private boolean local;
-    
+
+    private List<Categoria> listaCategorias;
+
     public Lancamento() {
         this.inclusao = Date.from( LocalDate.now().atStartOfDay( ZoneId.systemDefault() ).toInstant() );
         this.tipo = Tipo.DEBITO;
@@ -52,12 +56,12 @@ public class Lancamento implements Serializable {
         this.link = "";
         this.categorias = "";
     }
-    
+
     public Lancamento( Integer id ) {
         this();
         this.id = id;
     }
-    
+
     public Lancamento( Tipo tipo, String descricao, String inclusao, String quantidade, String valor, int usuario ) {
         this.tipo = tipo;
         this.descricao = descricao;
@@ -67,99 +71,99 @@ public class Lancamento implements Serializable {
         this.usuario = usuario;
         this.local = true;
     }
-    
+
     public Integer getId() {
         return id;
     }
-    
+
     public void setId( int id ) {
         this.id = id;
     }
-    
+
     public Tipo getTipo() {
         return tipo;
     }
-    
+
     public void setTipo( Tipo tipo ) {
         this.tipo = tipo;
     }
-    
+
     public String getDescricao() {
         return descricao;
     }
-    
+
     public void setDescricao( String descricao ) {
         this.descricao = descricao;
     }
-    
+
     public int getFrequencia() {
         return frequencia;
     }
-    
+
     public void setFrequencia( int frequencia ) {
         this.frequencia = frequencia;
     }
-    
+
     public Date getInclusao() {
         return inclusao;
     }
-    
+
     public void setInclusao( Date inclusao ) {
         this.inclusao = inclusao;
     }
-    
+
     public BigDecimal getQuantidade() {
         return quantidade;
     }
-    
+
     public void setQuantidade( BigDecimal quantidade ) {
         this.quantidade = quantidade;
     }
-    
+
     public BigDecimal getValor() {
         return valor;
     }
-    
+
     public void setValor( BigDecimal valor ) {
         this.valor = valor;
     }
-    
+
     public BigDecimal getValorTotal() {
         return valor.multiply( quantidade );
     }
-    
+
     public String getLink() {
         return link;
     }
-    
+
     public void setLink( String link ) {
         this.link = link;
     }
-    
+
     public String getCategorias() {
         return categorias;
     }
-    
+
     public void setCategorias( String categorias ) {
         this.categorias = categorias;
     }
-    
+
     public int getUsuario() {
         return usuario;
     }
-    
+
     public void setUsuario( int usuario ) {
         this.usuario = usuario;
     }
-    
+
     public int getMes() {
         return inclusao.toInstant().atZone( ZoneId.systemDefault() ).toLocalDate().getMonthValue();
     }
-    
+
     public int getAno() {
         return inclusao.toInstant().atZone( ZoneId.systemDefault() ).toLocalDate().getYear();
     }
-    
+
     public int getDia() {
         return inclusao.toInstant().atZone( ZoneId.systemDefault() ).toLocalDate().getDayOfMonth();
     }
@@ -167,7 +171,14 @@ public class Lancamento implements Serializable {
     public boolean isLocal() {
         return local;
     }
-    
+
+    public List<Categoria> getListaCategorias() {
+        if ( listaCategorias == null ) {
+            listaCategorias = new ArrayList<>();
+        }
+        return listaCategorias;
+    }
+
     @Override
     public int hashCode() {
         int hash = 3;
@@ -210,14 +221,11 @@ public class Lancamento implements Serializable {
         return Objects.equals( this.valor, other.valor );
     }
 
-    
-    
     @Override
     public String toString() {
         return String.format( "%s - %s - %s - %.2f", this.tipo.getDescricao(),
                 this.descricao, String.format( "%d-%d-%d", getAno(), getMes(),
                         getDia() ), this.getValorTotal() );
     }
-    
-    
+
 }
