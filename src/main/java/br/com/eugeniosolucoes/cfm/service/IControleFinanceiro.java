@@ -6,6 +6,8 @@
 package br.com.eugeniosolucoes.cfm.service;
 
 import br.com.eugeniosolucoes.cfm.model.Balanco;
+import br.com.eugeniosolucoes.cfm.model.Categoria;
+import br.com.eugeniosolucoes.cfm.model.Frequencia;
 import br.com.eugeniosolucoes.cfm.model.Lancamento;
 import java.util.List;
 
@@ -18,10 +20,14 @@ public interface IControleFinanceiro {
     Balanco getBalanco( int mes, int ano, int usuario );
 
     List<Lancamento> getLancamentos();
-    
+
+    List<Categoria> getCategorias( int usuario );
+
+    List<Frequencia> getFrequencias( int usuario );
+
     void salvarLancamento( Lancamento lancamento );
 
     void excluirLancamento( Lancamento lancamento );
-    
+
     void sincronizar();
 }

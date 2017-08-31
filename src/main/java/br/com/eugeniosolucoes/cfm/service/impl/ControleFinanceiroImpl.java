@@ -6,11 +6,14 @@
 package br.com.eugeniosolucoes.cfm.service.impl;
 
 import br.com.eugeniosolucoes.cfm.model.Balanco;
+import br.com.eugeniosolucoes.cfm.model.Categoria;
+import br.com.eugeniosolucoes.cfm.model.Frequencia;
 import br.com.eugeniosolucoes.cfm.model.Lancamento;
 import br.com.eugeniosolucoes.cfm.repository.IBalancoRepository;
 import br.com.eugeniosolucoes.cfm.repository.impl.BalancoRepositoryImpl;
 import br.com.eugeniosolucoes.cfm.service.IControleFinanceiro;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -78,6 +81,26 @@ public class ControleFinanceiroImpl implements IControleFinanceiro {
     @Override
     public List<Lancamento> getLancamentos() {
         return new ArrayList<>( lancamentos );
+    }
+
+    @Override
+    public List<Categoria> getCategorias( int usuario ) {
+        try {
+            return repository.getCategorias( usuario );
+        } catch ( Exception e ) {
+            LOGGER.log( Level.INFO, e.getMessage() );
+        }
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<Frequencia> getFrequencias( int usuario ) {
+        try {
+            return repository.getFrequencias( usuario );
+        } catch ( Exception e ) {
+            LOGGER.log( Level.INFO, e.getMessage() );
+        }
+        return Collections.emptyList();
     }
 
     private void validarLancamento( Lancamento lancamento ) {
