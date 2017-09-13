@@ -5,13 +5,16 @@
  */
 package br.com.eugeniosolucoes.cfm.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  *
  * @author eugenio
  */
-public class Frequencia {
+public class Frequencia implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private int id;
 
@@ -19,7 +22,7 @@ public class Frequencia {
 
     public Frequencia() {
     }
-    
+
     public Frequencia( String descricao ) {
         this.descricao = descricao;
     }

@@ -14,49 +14,46 @@ import br.com.eugeniosolucoes.cfm.repository.impl.BalancoRepositoryImpl;
 import br.com.eugeniosolucoes.cfm.service.IControleFinanceiro;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ControleFinanceiroImpl implements IControleFinanceiro {
+public final class ControleFinanceiroImpl implements IControleFinanceiro {
 
-    private static final String ARQUIVO_LOCAL = "lancamentos.bin";
+
+    private static final String CATEGORIAS_BIN = "categorias.bin";
+
+    private static final String FREQUENCIAS_BIN = "frequencias.bin";
+
+    private static final String LANCAMENTOS_BIN = "lancamentos.bin";
 
     private static final Logger LOGGER = Logger.getLogger( ControleFinanceiroImpl.class.getName() );
 
     private final IBalancoRepository repository = new BalancoRepositoryImpl();
 
-    private Set<Lancamento> lancamentos;
+    private int usuario;
+
+    private final List<Categoria> categorias;
+
+    private final List<Frequencia> frequencias;
+
+    private final List<Lancamento> lancamentos;
 
     public ControleFinanceiroImpl() {
-        try {
-            lancamentos = repository.deserializar( ARQUIVO_LOCAL );
-        } catch ( Exception e ) {
-            LOGGER.log( Level.INFO, e.getMessage() );
-            lancamentos = new HashSet<>();
-        }
-    }
-   
-
-    @Override
-    public Balanco getBalanco( int mes, int ano, int usuario ) {
-        Balanco balanco = new Balanco( mes, ano );
-        try {
-            balanco = repository.getBalanco( usuario, ano, mes );
-        } catch ( Exception e ) {
-            LOGGER.log( Level.INFO, e.getMessage() );
-        }
-        return balanco;
+        this.lancamentos = new ArrayList<>();
+        this.frequencias = new ArrayList<>();
+        this.categorias = new ArrayList<>();
     }
 
     @Override
     public void salvarLancamento( Lancamento lancamento ) {
         try {
             validarLancamento( lancamento );
+            if ( lancamentos.contains( lancamento ) ) {
+                lancamentos.remove( lancamento );
+            }
             lancamentos.add( lancamento );
-            repository.serializar( lancamentos, ARQUIVO_LOCAL );
+            repository.serializar( lancamentos, LANCAMENTOS_BIN );
         } catch ( Exception ex ) {
             LOGGER.log( Level.SEVERE, ex.getMessage(), ex );
         }
@@ -66,7 +63,7 @@ public class ControleFinanceiroImpl implements IControleFinanceiro {
     public void excluirLancamento( Lancamento lancamento ) {
         try {
             if ( lancamentos.remove( lancamento ) ) {
-                repository.serializar( lancamentos, ARQUIVO_LOCAL );
+                repository.serializar( lancamentos, LANCAMENTOS_BIN );
             }
         } catch ( Exception ex ) {
             LOGGER.log( Level.SEVERE, ex.getMessage(), ex );
@@ -84,9 +81,26 @@ public class ControleFinanceiroImpl implements IControleFinanceiro {
     }
 
     @Override
-    public List<Categoria> getCategorias( int usuario ) {
+    public List<Categoria> getCategorias() {
         try {
-            return repository.getCategorias( usuario );
+            List<Categoria> result = repository.getCategorias( usuario );
+            repository.serializar( result, CATEGORIAS_BIN );
+            return result;
+        } catch ( Exception e ) {
+            LOGGER.log( Level.INFO, e.getMessage() );
+            try {
+                return repository.deserializar( CATEGORIAS_BIN );
+            } catch ( Exception ex ) {
+                LOGGER.log( Level.INFO, ex.getMessage() );
+            }
+        }
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<Frequencia> getFrequencias() {
+        try {
+            return repository.getFrequencias( usuario );
         } catch ( Exception e ) {
             LOGGER.log( Level.INFO, e.getMessage() );
         }
@@ -94,13 +108,8 @@ public class ControleFinanceiroImpl implements IControleFinanceiro {
     }
 
     @Override
-    public List<Frequencia> getFrequencias( int usuario ) {
-        try {
-            return repository.getFrequencias( usuario );
-        } catch ( Exception e ) {
-            LOGGER.log( Level.INFO, e.getMessage() );
-        }
-        return Collections.emptyList();
+    public void autenticar( String usuario, String senha ) {
+        this.usuario = 1;
     }
 
     private void validarLancamento( Lancamento lancamento ) {

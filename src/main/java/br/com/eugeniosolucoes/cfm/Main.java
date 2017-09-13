@@ -21,10 +21,15 @@ public class Main {
 
         IControleFinanceiro icf = new ControleFinanceiroImpl();
 
-        //Lancamento lancamento = new Lancamento( Tipo.DEBITO, "teste1", "2017-08-01", "1", "30", 1 );
-        //icf.salvarLancamento( lancamento );
-        List<Lancamento> lancamentos = icf.getLancamentos();
-        System.out.println( lancamentos );
+        Lancamento lancamento = new Lancamento( Tipo.DEBITO, "teste1", "2017-08-01", "1", "30", 1 );
+        icf.salvarLancamento( lancamento );
+        Lancamento lancamento1 = new Lancamento( Tipo.DEBITO, "teste1", "2017-08-01", "1", "35", 1 );
+        icf.salvarLancamento( lancamento1 );
+
+        icf.excluirLancamento( lancamento );
+
+        System.out.println( icf.getLancamentos() );
+
     }
 
 }

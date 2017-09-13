@@ -21,14 +21,15 @@ public interface IBalancoRepository {
     Balanco getPeriodo( int usuario, int ano, int mes );
 
     List<Categoria> getCategorias( int usuario );
-    
+
     List<Frequencia> getFrequencias( int usuario );
+
     /**
-     * 
+     *
      * @param <E>
      * @param file
      * @return
-     * @throws Exception 
+     * @throws Exception
      */
     <E> E deserializar( String file ) throws Exception;
 
@@ -40,5 +41,5 @@ public interface IBalancoRepository {
      * @throws Exception
      */
     <E> void serializar( E element, String file ) throws Exception;
-    
+
 }

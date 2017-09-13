@@ -12,25 +12,30 @@ import java.util.Objects;
  *
  * @author eugenio
  */
-public class Categoria implements Serializable {
+public class Categoria implements Serializable, Comparable<Categoria> {
 
     private static final long serialVersionUID = 1L;
-  
+
     private int id;
-    
+
     private Tipo tipo;
-    
+
     private String descricao;
 
+    private Modelo modelo;
+
     public Categoria() {
+        this.modelo = new Modelo();
     }
 
     public Categoria( Tipo tipo, String descricao ) {
+        this();
         this.tipo = tipo;
         this.descricao = descricao;
     }
 
     public Categoria( int id, Tipo tipo, String descricao ) {
+        this();
         this.id = id;
         this.tipo = tipo;
         this.descricao = descricao;
@@ -58,6 +63,14 @@ public class Categoria implements Serializable {
 
     public void setTipo( Tipo tipo ) {
         this.tipo = tipo;
+    }
+
+    public boolean isOnline() {
+        return modelo.isOnline();
+    }
+
+    public void setOnline( boolean online ) {
+        modelo.setOnline( online );
     }
 
     @Override
@@ -89,6 +102,11 @@ public class Categoria implements Serializable {
     @Override
     public String toString() {
         return "Categoria{" + "tipo=" + tipo + ", descricao=" + descricao + '}';
+    }
+
+    @Override
+    public int compareTo( Categoria o ) {
+        return this.descricao.toLowerCase().compareTo( o.descricao.toLowerCase() );
     }
 
 }

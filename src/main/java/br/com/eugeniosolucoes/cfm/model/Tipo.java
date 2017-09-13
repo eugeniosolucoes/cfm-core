@@ -12,10 +12,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author eugenio
  */
 public enum Tipo {
-   
-    @JsonProperty(value = "debito")
-    DEBITO( "débito" ), 
-    @JsonProperty(value = "credito")
+
+    @JsonProperty( value = "debito" )
+    DEBITO( "débito" ),
+    @JsonProperty( value = "credito" )
     CREDITO( "crédito" );
 
     private final String descricao;
@@ -27,5 +27,5 @@ public enum Tipo {
     public String getDescricao() {
         return descricao;
     }
-    
+
 }

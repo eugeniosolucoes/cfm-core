@@ -198,14 +198,13 @@ public class BalancoRepositoryImpl implements IBalancoRepository {
         public void setFrequencias( List<Frequencia> frequencias ) {
             this.frequencias = frequencias;
         }
-        
-        
+
     }
 
     private static class Balancos {
 
         List<Balanco> balancos = new ArrayList<>();
-        
+
         public Balancos() {
         }
 

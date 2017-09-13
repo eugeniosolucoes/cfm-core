@@ -7,8 +7,6 @@ package br.com.eugeniosolucoes.cfm.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -16,9 +14,8 @@ import java.util.List;
  */
 public class Balanco implements Serializable {
 
-
     private static final long serialVersionUID = 1L;
-    
+
     private int mes;
 
     private int ano;
@@ -27,11 +24,12 @@ public class Balanco implements Serializable {
 
     private BigDecimal debitos;
 
-    private List<Lancamento> lancamentos;
-    
+    private Modelo modelo;
+
     public Balanco() {
         this.creditos = BigDecimal.ZERO;
         this.debitos = BigDecimal.ZERO;
+        this.modelo = new Modelo();
     }
 
     public Balanco( int mes, int ano ) {
@@ -76,11 +74,12 @@ public class Balanco implements Serializable {
         return this.creditos.subtract( this.debitos );
     }
 
-    public List<Lancamento> getLancamentos() {
-        if ( lancamentos == null ) {
-            lancamentos = new ArrayList<>();
-        }
-        return lancamentos;
+    public boolean isOnline() {
+        return modelo.isOnline();
+    }
+
+    public void setOnline( boolean online ) {
+        modelo.setOnline( online );
     }
 
     @Override
@@ -111,8 +110,8 @@ public class Balanco implements Serializable {
 
     @Override
     public String toString() {
-        return String.format( "Ano: %s Mês: %s - Créditos: %.2f Débitos: %.2f Balanço: %.2f", 
-                this.ano, this.mes, this.creditos, this.debitos, 
+        return String.format( "Ano: %s Mês: %s - Créditos: %.2f Débitos: %.2f Balanço: %.2f",
+                this.ano, this.mes, this.creditos, this.debitos,
                 this.getBalanco() );
     }
 

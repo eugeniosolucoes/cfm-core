@@ -17,13 +17,13 @@ import java.util.List;
  */
 public interface IControleFinanceiro {
 
-    Balanco getBalanco( int mes, int ano, int usuario );
+    void autenticar( String usuario, String senha );
 
     List<Lancamento> getLancamentos();
 
-    List<Categoria> getCategorias( int usuario );
+    List<Categoria> getCategorias();
 
-    List<Frequencia> getFrequencias( int usuario );
+    List<Frequencia> getFrequencias();
 
     void salvarLancamento( Lancamento lancamento );
 

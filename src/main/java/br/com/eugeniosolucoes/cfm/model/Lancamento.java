@@ -43,9 +43,9 @@ public class Lancamento implements Serializable {
 
     private int usuario;
 
-    private boolean local;
-
     private List<Categoria> listaCategorias;
+
+    private Modelo modelo;
 
     public Lancamento() {
         this.inclusao = Date.from( LocalDate.now().atStartOfDay( ZoneId.systemDefault() ).toInstant() );
@@ -55,6 +55,7 @@ public class Lancamento implements Serializable {
         this.descricao = "";
         this.link = "";
         this.categorias = "";
+        this.modelo = new Modelo();
     }
 
     public Lancamento( Integer id ) {
@@ -63,13 +64,13 @@ public class Lancamento implements Serializable {
     }
 
     public Lancamento( Tipo tipo, String descricao, String inclusao, String quantidade, String valor, int usuario ) {
+        this();
         this.tipo = tipo;
         this.descricao = descricao;
         this.inclusao = Date.from( LocalDate.parse( inclusao, DateTimeFormatter.ISO_DATE ).atStartOfDay( ZoneId.systemDefault() ).toInstant() );
         this.quantidade = new BigDecimal( quantidade );
         this.valor = new BigDecimal( valor );
         this.usuario = usuario;
-        this.local = true;
     }
 
     public Integer getId() {
@@ -168,15 +169,19 @@ public class Lancamento implements Serializable {
         return inclusao.toInstant().atZone( ZoneId.systemDefault() ).toLocalDate().getDayOfMonth();
     }
 
-    public boolean isLocal() {
-        return local;
-    }
-
     public List<Categoria> getListaCategorias() {
         if ( listaCategorias == null ) {
             listaCategorias = new ArrayList<>();
         }
         return listaCategorias;
+    }
+
+    public boolean isOnline() {
+        return modelo.isOnline();
+    }
+
+    public void setOnline( boolean online ) {
+        modelo.setOnline( online );
     }
 
     @Override
