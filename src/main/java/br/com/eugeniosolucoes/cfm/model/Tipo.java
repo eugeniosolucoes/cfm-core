@@ -28,4 +28,7 @@ public enum Tipo {
         return descricao;
     }
 
+    public static Tipo fromOrdinal(int ordinal){
+        return ordinal == 0 ? DEBITO : CREDITO;
+    }
 }

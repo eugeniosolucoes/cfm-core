@@ -20,7 +20,6 @@ import java.util.logging.Logger;
 
 public final class ControleFinanceiroImpl implements IControleFinanceiro {
 
-
     private static final String CATEGORIAS_BIN = "categorias.bin";
 
     private static final String FREQUENCIAS_BIN = "frequencias.bin";
@@ -33,16 +32,10 @@ public final class ControleFinanceiroImpl implements IControleFinanceiro {
 
     private int usuario;
 
-    private final List<Categoria> categorias;
-
-    private final List<Frequencia> frequencias;
-
     private final List<Lancamento> lancamentos;
 
     public ControleFinanceiroImpl() {
         this.lancamentos = new ArrayList<>();
-        this.frequencias = new ArrayList<>();
-        this.categorias = new ArrayList<>();
     }
 
     @Override
@@ -54,6 +47,8 @@ public final class ControleFinanceiroImpl implements IControleFinanceiro {
             }
             lancamentos.add( lancamento );
             repository.serializar( lancamentos, LANCAMENTOS_BIN );
+        } catch ( IllegalArgumentException ex ) {
+            throw new IllegalArgumentException( ex.getMessage() );
         } catch ( Exception ex ) {
             LOGGER.log( Level.SEVERE, ex.getMessage(), ex );
         }
@@ -84,6 +79,9 @@ public final class ControleFinanceiroImpl implements IControleFinanceiro {
     public List<Categoria> getCategorias() {
         try {
             List<Categoria> result = repository.getCategorias( usuario );
+            if ( result == null ) {
+                throw new IllegalStateException( "Erro ao recuperar categorias!" );
+            }
             repository.serializar( result, CATEGORIAS_BIN );
             return result;
         } catch ( Exception e ) {
@@ -100,9 +98,19 @@ public final class ControleFinanceiroImpl implements IControleFinanceiro {
     @Override
     public List<Frequencia> getFrequencias() {
         try {
-            return repository.getFrequencias( usuario );
+            List<Frequencia> result = repository.getFrequencias( usuario );
+            if ( result == null ) {
+                throw new IllegalStateException( "Erro ao recuperar frequencias!" );
+            }
+            repository.serializar( result, FREQUENCIAS_BIN );
+            return result;
         } catch ( Exception e ) {
             LOGGER.log( Level.INFO, e.getMessage() );
+            try {
+                return repository.deserializar( FREQUENCIAS_BIN );
+            } catch ( Exception ex ) {
+                LOGGER.log( Level.INFO, ex.getMessage() );
+            }
         }
         return Collections.emptyList();
     }
